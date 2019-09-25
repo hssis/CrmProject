@@ -104,7 +104,7 @@
           <th width="25"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
           <th width="80">ID</th>
           <th width="150px">考核指标集名称</th>
-          <th width="">考核指标集描述</th>
+          <th width="80">考核指标集描述</th>
           <th width="80">公司编号</th>
           <th width="200px">最后修改时间</th>
           <th width="70">修改</th>                

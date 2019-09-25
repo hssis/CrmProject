@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sc.bean.SysEmpuser;
 import com.sc.bean.SysRole;
 import com.sc.bean.SysUsers;
 import com.sc.bean.SysUsersExample;
 import com.sc.bean.SysUsersExample.Criteria;
 import com.sc.bean.SysUsersRole;
 import com.sc.bean.SysUsersRoleExample;
+import com.sc.mapper.SysEmpuserMapper;
 import com.sc.mapper.SysUsersMapper;
 import com.sc.mapper.SysUsersRoleMapper;
 import com.sc.service.RolesService;
@@ -42,43 +44,12 @@ public class UsersController {
 	@Autowired
 	SysUsersRoleMapper SysUsersRoleMapper;
 	
+	@Autowired
+	SysEmpuserMapper SysEmpuserMapper;
+	
 	@RequestMapping("/update.do")
 	public ModelAndView update111(ModelAndView mav, HttpSession session , HttpServletRequest req, SysUsers user, Long[] roleId){
-		
-		/*String uname = user.getUserName();
-		SysUsersExample sysUsersExample = new SysUsersExample();
-		Criteria c = sysUsersExample.createCriteria();
-		c.andUserNameEqualTo(uname);
-		
-		List<SysUsers> list3 = SysUsersMapper.selectByExample(sysUsersExample);
-		
-		if(list3.size() == 0){
-			Date date = new Date();
-			user.setLastTime(date);
-			
-			SysUsers u = (SysUsers)session.getAttribute("nowuser");
-			
-			Long uid = u.getUserId();
-			
-			UsersService.updateUserRole(user, roleId, uid);
-			mav.addObject("ok", "1");
-		}else if(list3.size() ==1){
-			if(list3.get(0).getUserId() == user.getUserId()){
-				Date date = new Date();
-				user.setLastTime(date);
-				
-				SysUsers u = (SysUsers)session.getAttribute("nowuser");
-				
-				Long uid = u.getUserId();
-				
-				UsersService.updateUserRole(user, roleId, uid);
-				mav.addObject("ok", "1");
-			}
-			mav.addObject("ok", "2");
-			
-		}else {
-			mav.addObject("ok", "2");
-		}*/
+		System.out.println("********************"+roleId);
 		
 		SysUsers u = (SysUsers)session.getAttribute("nowuser");
 		
@@ -93,6 +64,7 @@ public class UsersController {
 		if(list.isEmpty()){
 			for (Long long1 : roleId) {
 				if(long1 == 1){
+					
 					Integer ok=3;
 					mav.setViewName("redirect:../usersctlr/getlist1.do?ok="+ok);
 					return mav;
@@ -151,6 +123,14 @@ public class UsersController {
 		Date date = new Date();
 		user.setLastTime(date);
 		
+		Long empId = user.getEmpId();
+		SysEmpuser selectByPrimaryKey = SysEmpuserMapper.selectByPrimaryKey(empId);
+		if(selectByPrimaryKey==null){
+			Integer ok = 5;
+			mav.setViewName("redirect:../usersctlr/getlist1.do?ok="+ok);
+			return mav;
+		}
+		
 		SysUsersRoleExample sysUsersRoleExample = new SysUsersRoleExample();
 		com.sc.bean.SysUsersRoleExample.Criteria c1 = sysUsersRoleExample.createCriteria();
 		c1.andUserIdEqualTo(uid);
@@ -172,6 +152,7 @@ public class UsersController {
 				
 				SysUsers u = UsersService.selectByName(userName);
 				Long userId = u.getUserId();
+				if(roleId!=null){
 				for (Long rId : roleId) {
 					
 				SysUsersRole sysUsersRole1 = new SysUsersRole();
@@ -181,6 +162,7 @@ public class UsersController {
 				sysUsersRole1.setUserId(userId);
 				
 				SysUsersRoleMapper.insert(sysUsersRole1);
+				}
 				}
 					Integer ok=1;
 					mav.setViewName("redirect:../usersctlr/getlist1.do?ok="+ok);

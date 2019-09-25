@@ -63,7 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
  <div class="margin clearfix">
  
- 	<div class="search_style">
+ 	<%-- <div class="search_style">
     	<font size="80">${aa.ckM }</font> 
     <form action="#" method="post">
       <div class="title_names">角色名关键字查询</div>
@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <li style="width:90px;"><button type="submit" class="btn_search"><i class="icon-search"></i>查询</button></li>
       </ul>
       </form>
-    </div>
+    </div> --%>
  
    <div class="border clearfix">
        <span class="l_f">
@@ -99,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!-- <td class="center"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></td> -->
 				<td>${r.roleName }</td>
 				<td>${r.highRoleName == null||r.highRoleName == '0' ? "无":r.highRoleName }</td>
-				<td class="hidden-480">${r.roleId==1 ? "一切权限":"" }<c:forEach items="${r.perms }" var="p"><p>${p.permissionName}</p></c:forEach></td>
+				<td class="hidden-480">${r.roleId==1 ? "一切权限":"" }<c:forEach items="${r.perms }" var="p"><p>${p.permissionName == "查看销售订单统计" ? "":p.permissionName}</p></c:forEach></td>
 				<td>${r.roleDescribe }</td>
 				<td>
 				<c:if test="${r.roleId !=1 }">
@@ -246,7 +246,7 @@ function update(){
 function del_role(uId){
  		layer.confirm('是否确定删除？',{
                 btn: ['是','否'] ,				
-				icon:2,
+				icon:0,
 				},
 				function(){
 						  location.href="del.do?roleId="+uId;
